@@ -1,0 +1,20 @@
+<mat-toolbar color = "secondary" *ngIf = "isClicked" class = "etf ">
+  <span class = "spacer"></span>
+  <ul>
+    <li >
+      <a mat-button routerLink = "/"  >O predmetu</a>
+    </li>
+    <li >
+      <a mat-button routerLink = "/masterstudije" >Materijali</a>
+    </li>
+    <li >
+      <a mat-button routerLink = "/nauka"  > Obavestenja</a>
+    </li>
+  </ul>
+
+</mat-toolbar>
+<button mat-button [matMenuTriggerFor]="menu" *ngIf = "!isClicked">Odaberite predmet na kom predajete</button>
+<mat-menu #menu="matMenu">
+  <button mat-menu-item (click) = "pritisnut()">Prvi predmet</button>
+  <button mat-menu-item (click) = "pritisnut()">Drugi predmet</button>
+</mat-menu>

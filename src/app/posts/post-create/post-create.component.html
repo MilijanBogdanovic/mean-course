@@ -25,12 +25,32 @@
       formControlName = "content"
       placeholder="Post Content"
       ></textarea>
-      <mat-error *ngIf = "this.form.get('content').invalid">Please enter a post title</mat-error>
+      <mat-error *ngIf = "this.form.get('content').invalid">Please enter a post content</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <textarea
+      matInput
+      rows="4"
+      formControlName = "tip"
+      placeholder="Post tip"
+      required
+      ></textarea>
+      <mat-error *ngIf = "this.form.get('tip').invalid">Please enter a post tip</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <textarea
+      matInput
+      rows="4"
+      formControlName = "oznaka"
+      placeholder="Post oznaka"
+      required
+      ></textarea>
+      <mat-error *ngIf = "this.form.get('oznaka').invalid">Please enter a post oznaka</mat-error>
     </mat-form-field>
     <button
       mat-raised-button
       color="primary"
-      type = "submit">Save Post</button>
+      type = "submit" >Save Post</button>
   </form>
 </mat-card>
 

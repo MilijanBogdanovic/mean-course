@@ -3,6 +3,7 @@ import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { Subject } from "rxjs";
 import { AuthData } from "./signup/auth-data-model";
+import { SignupData } from "./signup/signup-data-model";
 
 @Injectable({providedIn: "root"})
 export class AuthService {
@@ -35,10 +36,15 @@ export class AuthService {
   }
   getAuthEmailListener() {
     return this.authEmailListener.asObservable();
-  }s
-  createUser(email:string, password: string) {
-    const authData: AuthData = {email:email, password:password};
-    this.http.post("http://localhost:3000/api/users/signup", authData)
+  }
+  createUser(name:string, surname:string,username: string,
+            email:string, password: string,city:string,date_of_birth:string,
+            contact_phone:string) {
+    const signupData: SignupData = {name:name, surname:surname,username:username,
+      email:email, password:password,city:city,
+      date_of_birth:date_of_birth,
+      contact_phone:contact_phone};
+    this.http.post("http://localhost:3000/api/users/signup", signupData)
       .subscribe (response => {
         console.log(response);
         this.router.navigate(['/']);

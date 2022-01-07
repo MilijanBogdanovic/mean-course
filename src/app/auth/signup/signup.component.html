@@ -1,24 +1,49 @@
 <mat-card>
-  <mat-spinner *ngIf = "isLoading"></mat-spinner>
-  <form (submit) ="onSignup(signupForm)" #signupForm ="ngForm"  *ngIf = "!isLoading">
+  <mat-spinner *ngIf="isLoading"></mat-spinner>
+  <form (submit)="onSignup(signupForm)" #signupForm="ngForm" *ngIf="!isLoading">
     <mat-form-field>
-      <input
-      matInput
-      name = "email"
-      ngModel
-      type="email"
-      placeholder = "E-Mail" #emailInput= "ngModel" required email>
-      <mat-error *ngIf = "emailInput.invalid">Please enter a valid email</mat-error>
+      <input matInput name="name" ngModel type="text" placeholder="Ime" #nameInput="ngModel" required>
+      <mat-error *ngIf="emailInput.invalid">Unesite validno ime</mat-error>
     </mat-form-field>
     <mat-form-field>
-      <input type="password" name = "password" ngModel matInput placeholder = "Password" #passwordInput = "ngModel" required>
-      <mat-error *ngIf = "passwordInput.invalid">Please enter a valid password</mat-error>
+      <input matInput name="surname" ngModel type="text" placeholder="Prezime" #surnameInput="ngModel" required>
+      <mat-error *ngIf="emailInput.invalid">Unesite validno prezime</mat-error>
     </mat-form-field>
-    <button  mat-raised-button color="primary" type = "submit " *ngIf = "!isLoading">Sign Up</button>
+    <mat-form-field>
+      <input type="text" name="username" ngModel matInput placeholder="Username" #usernameInput="ngModel" required>
+      <mat-error *ngIf="usernameInput.invalid">Please enter a valid username</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput name="email" ngModel type="email" placeholder="E-Mail" #emailInput="ngModel" required email>
+      <mat-error *ngIf="emailInput.invalid">Please enter a valid email</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input type="password" name="password" ngModel matInput placeholder="Password" #passwordInput="ngModel" required>
+      <mat-error *ngIf="passwordInput.invalid">Please enter a valid password</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input type="text" name="city" ngModel matInput placeholder="Grad" #cityInput="ngModel" required>
+      <mat-error *ngIf="passwordInput.invalid">Please enter a valid city</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input type="text" name="dateOfBirth" ngModel matInput placeholder="Datum rodjenja" #dateofBirthInput="ngModel"
+        required>
+      <mat-error *ngIf="dateofBirthInput.invalid">Please enter a valid date of Birth</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input type="text" name="contactPhone" ngModel matInput placeholder="Kontakt telefon" #contactPhoneInput="ngModel"
+        required>
+      <mat-error *ngIf="contactPhoneInput.invalid">Please enter a valid contact phone</mat-error>
+    </mat-form-field>
+    ZA OGLASIVACE:
+    <button mat-button [matMenuTriggerFor]="menu" *ngIf="!isClicked">ODABERITE AGENCIJU</button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item (click)="pritisnut()">Prva agencija</button>
+      <button mat-menu-item (click)="pritisnut()">Druga agencija</button>
+    </mat-menu>
+
+    <button mat-raised-button color="primary" type="submit " *ngIf="!isLoading">Registracija</button>
+
+
   </form>
 </mat-card>
-
-
-
-
-

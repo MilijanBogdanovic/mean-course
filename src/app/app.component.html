@@ -1,5 +1,18 @@
 <app-header></app-header>
-<main>
-  <router-outlet></router-outlet>
-</main>
-
+<mat-sidenav-container class="examplecontainer">
+  <mat-sidenav mode="side" [opened]="userIsAuthenticated" class="navbg">
+    <ul>
+      <li>
+        <a mat-button routerLink = "/opredmetu" routerLinkActive = "mat-accent" >Predmeti</a>
+      </li>
+      <li>
+        <a mat-button routerLink = "/" routerLinkActive = "mat-accent" >Obavestenja</a>
+      </li>
+    </ul>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <main class = "whole">
+      <router-outlet></router-outlet>
+    </main>
+  </mat-sidenav-content>
+</mat-sidenav-container>

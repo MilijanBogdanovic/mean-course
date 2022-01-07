@@ -12,7 +12,8 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner'
 import {MatPaginatorModule} from '@angular/material/paginator'
-
+import {MatSidenavModule} from '@angular/material/sidenav'
+import {MatMenuModule} from '@angular/material/menu';
 
 import { AppComponent } from './app.component';
 import {PostCreateComponent} from './posts/post-create/post-create.component';
@@ -26,6 +27,7 @@ import { OsnovnestudijeComponent } from './osnovnestudije/osnovnestudije.compone
 import { MasterstudijeComponent } from './masterstudije/masterstudije.component';
 import { NaukaComponent } from './nauka/nauka.component';
 import { KontaktComponent } from './kontakt/kontakt.component';
+import { OpredmetuComponent } from './opredmetu/opredmetu.component';
 
 
 
@@ -41,7 +43,8 @@ import { KontaktComponent } from './kontakt/kontakt.component';
     OsnovnestudijeComponent,
     MasterstudijeComponent,
     NaukaComponent,
-    KontaktComponent
+    KontaktComponent,
+    OpredmetuComponent
   ],
   imports: [
     BrowserModule,
@@ -54,6 +57,8 @@ import { KontaktComponent } from './kontakt/kontakt.component';
     MatButtonModule,
     MatToolbarModule,
     MatExpansionModule,
+    MatSidenavModule,
+    MatMenuModule,
     MatProgressSpinnerModule,
     HttpClientModule,
     MatPaginatorModule

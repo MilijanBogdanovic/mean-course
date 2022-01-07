@@ -21,6 +21,8 @@ export class PostsService {
         return  {
           title: post.title,
           content: post.content,
+          tip:post.tip,
+          oznaka:post.oznaka,
           id: post._id,
           imagePath: post.imagePath,
           creator: post.creator
@@ -28,7 +30,6 @@ export class PostsService {
       }), maxPosts: postData.maxPosts };
     }))
     .subscribe(transformedPostData => {
-      console.log(transformedPostData);
       this.posts = transformedPostData.posts;
 
       this.postsUpdated.next({posts: [...this.posts], postCount:transformedPostData.maxPosts});
@@ -39,14 +40,16 @@ export class PostsService {
     return this.postsUpdated.asObservable();
   }
   getPost(id:string) {
-    return this.http.get<{_id:string, title:string, content:string, imagePath: string,creator:string}>("http://localhost:3000/api/posts/" + id);
+    return this.http.get<{_id:string, title:string, content:string, tip:string,oznaka:string,imagePath: string,creator:string}>("http://localhost:3000/api/posts/" + id);
   }
 
 
-  addPost(title:string, content:string, image: File) {
+  addPost(title:string, content:string, tip:string,oznaka:string,image: File) {
     const postData = new FormData();
     postData.append("title", title);
     postData.append("content", content);
+    postData.append("tip",tip);
+    postData.append("oznaka",oznaka);
     postData.append("image", image, title);
     this.http.post<{message: string, post: Post}>('http://localhost:3000/api/posts', postData)
     .subscribe(responseData => {
@@ -56,16 +59,18 @@ export class PostsService {
   }
 
 
-  updatePost(id:string, title:string, content:string, image: File | string) {
+  updatePost(id:string, title:string, content:string, tip:string,oznaka:string,image: File | string) {
     let postData: Post | FormData;
     if(typeof(image) === 'object') {
       postData = new FormData();
       postData.append("id", id);
       postData.append("title",title);
       postData.append("content",content);
+      postData.append("tip",tip);
+      postData.append("oznaka",oznaka);
       postData.append("image",image,title);
     } else {
-      postData = {id: id, title:title, content: content, imagePath:image,creator:null};
+      postData = {id: id, title:title, content: content,tip:tip,oznaka:oznaka,imagePath:image,creator:null};
     }
 
     this.http.put("http://localhost:3000/api/posts/" + id,postData)

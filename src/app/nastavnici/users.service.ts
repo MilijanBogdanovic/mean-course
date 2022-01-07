@@ -17,13 +17,9 @@ export class UsersService {
     const queryParams =`?pagesize=${postsPerPage}&page=${currentPage}`;
     this.http.get<{message: string, users:any, maxUsers: number}>('http://localhost:3000/api/users' +queryParams)
     .pipe(map((userData) => {
-      return {users: userData.users.map(post => {
+      return {users: userData.users.map(user => {
         return  {
-          title: post.title,
-          content: post.content,
-          id: post._id,
-          imagePath: post.imagePath,
-          creator: post.creator
+          email: user.email
         };
       }), maxPosts: userData.maxUsers };
     }))

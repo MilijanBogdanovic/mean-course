@@ -1,44 +1,43 @@
-<mat-toolbar class = "etf" color = "primary">
-  <span>
-    <a routerLink = "/">Početna</a>
-  </span>
-  <span>
-    <img src="https://rti.etf.bg.ac.rs/rti/ir3ppk/style/logo.png" height="70px" width = "70px "  >
-  </span>
-  <span *ngIf = "this.useremail!=null">
-    Dobrodošli {{this.useremail}}
-  </span>
-  <span class = "spacer"></span>
-  <ul>
-    <li>
-      <a mat-button routerLink = "/nastavnici" routerLinkActive = "mat-accent">Zaposleni </a>
-    </li>
-    <li>
-      <a mat-button routerLink = "/osnovnestudije">Osnovne studije</a>
-    </li>
-    <li>
-      <a mat-button routerLink = "/masterstudije">Master studije</a>
-    </li>
-    <li>
-      <a mat-button routerLink = "/nauka">Nauka</a>
-    </li>
-    <li>
-      <a mat-button routerLink = "/kontakt">Kontakt</a>
-    </li>
-    <li *ngIf = "userIsAuthenticated">
-      <a mat-button routerLink = "/create" routerLinkActive = "mat-accent">New Post</a>
-    </li>
-    <li *ngIf = "!userIsAuthenticated">
-      <a mat-button routerLink = "/login" routerLinkActive = "mat-accent">Login</a>
-    </li>
-    <li *ngIf = "!userIsAuthenticated">
-      <a mat-button routerLink = "/signup" routerLinkActive = "mat-accent">Signup</a>
-    </li>
-    <li *ngIf = "userIsAuthenticated">
-      <a mat-button (click) = "onLogout()">LogOut</a>
-    </li>
-  </ul>
-</mat-toolbar>
 
-
+    <mat-toolbar class = "etf" color = "primary">
+      <span>
+        <a routerLink = "/">JeftinKvadratR</a>
+      </span>
+      <span>
+        <img src="https://www.kindpng.com/picc/m/3-32343_house-logo-design-vector-real-estate-logo-photos.png" height="70px" width = "70px "  >
+      </span>
+      <span *ngIf = "this.useremail!=null">
+        Dobrodošli {{this.useremail}}
+      </span>
+      <span class = "spacer"></span>
+      <ul>
+        <li *ngIf = "!userIsAuthenticated">
+          <a mat-button routerLink = "/nastavnici" routerLinkActive = "mat-accent" >Administrator </a>
+        </li>
+        <li *ngIf = "!userIsAuthenticated">
+          <a mat-button routerLink = "/"  >Osnovne studije</a>
+        </li>
+        <li *ngIf = "!userIsAuthenticated">
+          <a mat-button routerLink = "/masterstudije"  >Master studije</a>
+        </li>
+        <li *ngIf = "!userIsAuthenticated">
+          <a mat-button routerLink = "/nauka"  >Nauka</a>
+        </li>
+        <li *ngIf = "!userIsAuthenticated">
+          <a mat-button routerLink = "/kontakt"  >Kontakt</a>
+        </li>
+        <li *ngIf = "userIsAuthenticated">
+          <a mat-button routerLink = "/create" routerLinkActive = "mat-accent" >New Post</a>
+        </li>
+        <li *ngIf = "!userIsAuthenticated">
+          <a mat-button routerLink = "/login" routerLinkActive = "mat-accent">Uloguj se</a>
+        </li>
+        <li *ngIf = "!userIsAuthenticated">
+          <a mat-button routerLink = "/signup" routerLinkActive = "mat-accent">Registracija</a>
+        </li>
+        <li *ngIf = "userIsAuthenticated">
+          <a mat-button (click) = "onLogout()">LogOut</a>
+        </li>
+      </ul>
+    </mat-toolbar>
 

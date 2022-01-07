@@ -7,6 +7,7 @@ import { KontaktComponent } from './kontakt/kontakt.component';
 import { MasterstudijeComponent } from './masterstudije/masterstudije.component';
 import { NastavniciComponent } from './nastavnici/nastavnici.component';
 import { NaukaComponent } from './nauka/nauka.component';
+import { OpredmetuComponent } from './opredmetu/opredmetu.component';
 import { OsnovnestudijeComponent } from './osnovnestudije/osnovnestudije.component';
 import { PostCreateComponent } from './posts/post-create/post-create.component';
 import { PostListComponent } from './posts/post-list/post-list.component';
@@ -21,6 +22,7 @@ const routes: Routes = [
   {path:'masterstudije', component: MasterstudijeComponent},
   {path:'nauka', component: NaukaComponent},
   {path:'kontakt', component: KontaktComponent},
+  {path:'opredmetu', component: OpredmetuComponent},
 
 
 
