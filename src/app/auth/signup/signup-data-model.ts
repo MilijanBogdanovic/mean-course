@@ -1,3 +1,4 @@
+
 export interface SignupData {
   name: string;
   surname: string;
@@ -7,4 +8,5 @@ export interface SignupData {
   city: string;
   date_of_birth: string;
   contact_phone: string;
+  favoriteArray: [string];
 }

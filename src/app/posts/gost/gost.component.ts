@@ -1,18 +1,18 @@
-import { Component, OnDestroy, OnInit,NgZone } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { NgForm } from "@angular/forms";
 import { PageEvent } from "@angular/material/paginator";
-import { ActivatedRoute, Router } from "@angular/router";
+import { ActivatedRoute } from "@angular/router";
 import {Subscription} from 'rxjs';
 import { AuthService } from "src/app/auth/auth.service";
 import {Post} from '../post.model';
 import {PostsService} from '../posts.service';
 
 @Component({
-  selector: 'app-post-list',
-  templateUrl:'./post-list.component.html',
-  styleUrls: ['./post-list.component.css']
+  selector: 'app-gost',
+  templateUrl:'./gost.component.html',
+  styleUrls: ['./gost.component.css']
 })
-export class PostListComponent implements OnInit, OnDestroy{
+export class GostComponent implements OnInit, OnDestroy{
   /* posts = [
   {title:'First Post', content: 'This is the first post\'s content'},
   {title:'Second Post', content: 'This is the second post\'s content'},
@@ -21,20 +21,18 @@ export class PostListComponent implements OnInit, OnDestroy{
   posts:Post[] = [];
   isLoading = false;
   totalPosts = 0;
-  postsPerPage = 5;
-  currentPage = 1;
-  pageSizeOptions = [1,2,5,10];
+
   userIsAuthenticated:any = false;
   userId: string;
   private postsSub:Subscription;
   private authStatusSubs: Subscription;
 
-  constructor(public postsService: PostsService, private authService: AuthService, private router:Router) {}
+  constructor(public postsService: PostsService, private authService: AuthService) {}
 
 
   ngOnInit() {
     this.isLoading = true;
-    this.postsService.getPosts(this.postsPerPage,this.currentPage);
+    this.postsService.getPostsLastFive();
     this.userId = this.authService.getUserId();
     this.postsSub = this.postsService.getPostUpdateListener().
     subscribe((postData:{posts: Post[],postCount: number}) => {
@@ -51,16 +49,6 @@ export class PostListComponent implements OnInit, OnDestroy{
 
   onChangedPage(pageData: PageEvent) {
     this.isLoading = true;
-    this.currentPage = pageData.pageIndex + 1;
-    this.postsPerPage = pageData.pageSize;
-    this.postsService.getPosts(this.postsPerPage,this.currentPage);
-  }
-
-  onDelete(postId:string) {
-    this.isLoading =true;
-    this.postsService.deletePost(postId).subscribe(() => {
-      this.postsService.getPosts(this.postsPerPage,this.currentPage);
-    });
   }
 
 
@@ -70,7 +58,6 @@ export class PostListComponent implements OnInit, OnDestroy{
       return;
     }
     this.isLoading = true;
-    this.postsService.searchBySingleFilter(this.postsPerPage, this.currentPage,form.value.title,form.value.content);
     //this.postsService.searchBySingleFilter(this.postsPerPage, this.currentPage,"content",form.value.content);
   }
 
@@ -78,10 +65,4 @@ export class PostListComponent implements OnInit, OnDestroy{
     this.postsSub.unsubscribe();
     this.authStatusSubs.unsubscribe();
   }
-
-  makeFavorite(postId:string) {
-    this.isLoading =true;
-    //this.authService.makeFavorite(postId);
-  }
-
 }

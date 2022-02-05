@@ -1,27 +1,28 @@
-import { Component, OnDestroy, OnInit,NgZone } from "@angular/core";
-import { NgForm } from "@angular/forms";
-import { PageEvent } from "@angular/material/paginator";
-import { ActivatedRoute, Router } from "@angular/router";
-import {Subscription} from 'rxjs';
-import { AuthService } from "src/app/auth/auth.service";
-import {Post} from '../post.model';
-import {PostsService} from '../posts.service';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { PageEvent } from '@angular/material/paginator';
+import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { AuthService } from '../auth/auth.service';
+import { Post } from '../posts/post.model';
+import { PostsService } from '../posts/posts.service';
 
 @Component({
-  selector: 'app-post-list',
-  templateUrl:'./post-list.component.html',
-  styleUrls: ['./post-list.component.css']
+  selector: 'app-omiljeni',
+  templateUrl: './omiljeni.component.html',
+  styleUrls: ['./omiljeni.component.css']
 })
-export class PostListComponent implements OnInit, OnDestroy{
+export class OmiljeniComponent implements OnInit, OnDestroy{
   /* posts = [
   {title:'First Post', content: 'This is the first post\'s content'},
   {title:'Second Post', content: 'This is the second post\'s content'},
   {title:'Third Post', content: 'This is the third post\'s content'}
   ]; */
   posts:Post[] = [];
+  favoritePosts:string[] = [];
   isLoading = false;
   totalPosts = 0;
-  postsPerPage = 5;
+  postsPerPage = 10;
   currentPage = 1;
   pageSizeOptions = [1,2,5,10];
   userIsAuthenticated:any = false;
@@ -29,11 +30,25 @@ export class PostListComponent implements OnInit, OnDestroy{
   private postsSub:Subscription;
   private authStatusSubs: Subscription;
 
-  constructor(public postsService: PostsService, private authService: AuthService, private router:Router) {}
+  constructor(public postsService: PostsService, private authService: AuthService) {
+    this.ngOnInit();
+  }
 
 
   ngOnInit() {
     this.isLoading = true;
+    this.userIsAuthenticated = this.authService.getIsAuth();
+
+    //this.authService.getFavoritePosts();
+    this.authStatusSubs = this.authService.getAuthStatusListener().subscribe(isAuthenticated => {
+      this.userIsAuthenticated = isAuthenticated;
+      this.userId = this.authService.getUserId();
+      this.postsSub = this.authService.getPostUpdateListener().
+      subscribe((postData:{posts: string[]}) => {
+        this.favoritePosts = postData.posts;
+      });
+
+    });
     this.postsService.getPosts(this.postsPerPage,this.currentPage);
     this.userId = this.authService.getUserId();
     this.postsSub = this.postsService.getPostUpdateListener().
@@ -41,12 +56,10 @@ export class PostListComponent implements OnInit, OnDestroy{
       this.isLoading = false;
       this.totalPosts = postData.postCount;
       this.posts = postData.posts;
+      // this.favoritePosts = postData.favoritePosts;
     });
-    this.userIsAuthenticated = this.authService.getIsAuth();
-    this.authStatusSubs = this.authService.getAuthStatusListener().subscribe(isAuthenticated => {
-      this.userIsAuthenticated = isAuthenticated;
-      this.userId = this.authService.getUserId();
-    });
+
+    //console.log(localStorage.getItem("favoritePosts"));
   }
 
   onChangedPage(pageData: PageEvent) {
@@ -70,6 +83,7 @@ export class PostListComponent implements OnInit, OnDestroy{
       return;
     }
     this.isLoading = true;
+
     this.postsService.searchBySingleFilter(this.postsPerPage, this.currentPage,form.value.title,form.value.content);
     //this.postsService.searchBySingleFilter(this.postsPerPage, this.currentPage,"content",form.value.content);
   }
@@ -78,10 +92,5 @@ export class PostListComponent implements OnInit, OnDestroy{
     this.postsSub.unsubscribe();
     this.authStatusSubs.unsubscribe();
   }
-
-  makeFavorite(postId:string) {
-    this.isLoading =true;
-    //this.authService.makeFavorite(postId);
-  }
-
 }
+

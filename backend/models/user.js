@@ -9,8 +9,12 @@ const userSchema = mongoose.Schema({
   email: {type:String, required:true, unique:true},
   password: {type:String, required:true},
   city: {type:String, required:true},
-  date_of_birth: {type:String, required:true, unique:true},
-  contact_phone: {type:String, required:true, unique:true}
+  date_of_birth:{type:String, required:true},
+  contact_phone:{type:String, required:true},
+  imagePath: {type:String, required:true},
+  // favoriteArray: [mongoose.Schema.Types.ObjectId]
+  // favoriteArray:[{type: mongoose.Schema.Types.ObjectId, ref: "Post"}]
+  favoriteArray: [{type: String}]
 });
 
 userSchema.plugin(uniqueValidator);

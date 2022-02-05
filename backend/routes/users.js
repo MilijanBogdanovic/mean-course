@@ -3,19 +3,15 @@ const bcrypt = require("bcrypt");
 const User =require("../models/user");
 
 const jwt = require("jsonwebtoken");
-const user = require("../models/user");
 
 const router = express.Router();
-const checkAuth = require("../middleware/check-auth");
 const multer = require("multer");
-
 
 const MIME_TYPE_MAP = {
   'image/png' :'png',
   'image/jpeg': 'jpg',
   'image/jpg': 'jpg'
 }
-
 
 
 const storage = multer.diskStorage( {
@@ -36,7 +32,10 @@ const storage = multer.diskStorage( {
 });
 
 
-router.post("/signup",(req,res,next) => {
+router.post("/signup",multer({storage: storage}).single("image"),(req,res,next) => {
+  const url = req.protocol + "://" +req.get("host");
+  console.log(req.body);
+
   bcrypt.hash(req.body.password, 10)
   .then(hash => {
     const user = new User( {
@@ -47,7 +46,8 @@ router.post("/signup",(req,res,next) => {
       password: hash,
       city: req.body.city,
       date_of_birth: req.body.date_of_birth,
-      contact_phone: req.body.contact_phone
+      contact_phone: req.body.contact_phone,
+      imagePath: url + "/images/" + req.file.filename
     });
     user.save()
       .then(result => {
@@ -87,11 +87,13 @@ router.post("/login", (req,res,next) => {
     }
     const token = jwt.sign({email: fetchedUser.email, userId: fetchedUser._id}, 'secret_this_should_be_longer', {expiresIn: "1h" });
     console.log(token);
+    console.log(fetchedUser.favoriteArray);
     res.status(200).json( {
       token: token,
       expiresIn: 3600,
       userId: fetchedUser._id,
-      useremail:fetchedUser.email
+      useremail:fetchedUser.email,
+      favoritePosts:fetchedUser.favoriteArray
     })
   })
   .catch(err => {
@@ -99,6 +101,25 @@ router.post("/login", (req,res,next) => {
     return res.status(401).json( {
       message: "Auth failed"
     })
+  })
+})
+
+router.put("/favorite/:id",(req,res,next) => {
+
+  const postId = +req.query.postId;
+  //console.log(req.params.id);
+  console.log(req.query);
+  console.log(req.query.postId);
+  User.updateOne({_id: req.params.id},{ $push: { favoriteArray: req.query.postId.toString()}}).then(result => {
+    if(result.nModified >0) {
+      res.status(200).json( {
+        message:"Sve oke!"
+      })
+    }
+    else {
+      res.status(401).json({message: "Not authorized!"});
+      console.log("fail");
+    }
   })
 })
 

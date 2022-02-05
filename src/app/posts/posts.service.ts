@@ -8,9 +8,10 @@ import { query } from '@angular/animations';
 
 @Injectable({providedIn: 'root'})
 export class PostsService {
+
  private posts: Post[] = [];
  private postsUpdated = new Subject<{posts: Post[], postCount: number}>();
-
+ private favoritePosts = new Subject<{favoritePosts:Post[], postCount:number}>();
  constructor(private http: HttpClient,private router:Router) {}
 
   getPosts(postsPerPage:number, currentPage:number) {
@@ -36,6 +37,35 @@ export class PostsService {
     });
   }
 
+
+
+
+
+  getPostsLastFive() {
+    this.http.get<{message: string, posts:any, maxPosts: number}>('http://localhost:3000/api/posts/returnLastFive')
+    .pipe(map((postData) => {
+      return {posts: postData.posts.map(post => {
+        return  {
+          title: post.title,
+          content: post.content,
+          tip:post.tip,
+          oznaka:post.oznaka,
+          id: post._id,
+          imagePath: post.imagePath,
+          creator: post.creator
+        };
+      }), maxPosts: postData.maxPosts };
+    }))
+    .subscribe(transformedPostData => {
+      this.posts = transformedPostData.posts;
+
+      this.postsUpdated.next({posts: [...this.posts], postCount:transformedPostData.maxPosts});
+    });
+  }
+
+
+
+
   getPostUpdateListener() {
     return this.postsUpdated.asObservable();
   }
@@ -53,7 +83,7 @@ export class PostsService {
     postData.append("image", image, title);
     this.http.post<{message: string, post: Post}>('http://localhost:3000/api/posts', postData)
     .subscribe(responseData => {
-      this.router.navigate(["/"]);
+      this.router.navigate(["/list"]);
     });
 
   }
@@ -81,4 +111,30 @@ export class PostsService {
   deletePost(postId:string) {
     return this.http.delete("http://localhost:3000/api/posts/" + postId);
   }
+
+
+  searchBySingleFilter(postsPerPage:number, currentPage:number,title:String,content:String) {
+    const zap = null;
+    const queryParams =`?pagesize=${postsPerPage}&page=${currentPage}&title=${title}&content=${content}`;
+    this.http.get<{message: string, posts:any, maxPosts: number}>('http://localhost:3000/api/posts/filter' +queryParams)
+    .pipe(map((postData) => {
+      return {posts: postData.posts.map(post => {
+        return  {
+          title: post.title,
+          content: post.content,
+          tip:post.tip,
+          oznaka:post.oznaka,
+          id: post._id,
+          imagePath: post.imagePath,
+          creator: post.creator
+        };
+      }), maxPosts: postData.maxPosts };
+    }))
+    .subscribe(transformedPostData => {
+      this.posts = transformedPostData.posts;
+
+      this.postsUpdated.next({posts: [...this.posts], postCount:transformedPostData.maxPosts});
+    });
+  }
+
 }

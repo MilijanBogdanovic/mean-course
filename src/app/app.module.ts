@@ -15,6 +15,7 @@ import {MatPaginatorModule} from '@angular/material/paginator'
 import {MatSidenavModule} from '@angular/material/sidenav'
 import {MatMenuModule} from '@angular/material/menu';
 
+import { NgxCaptchaModule } from 'ngx-captcha';
 import { AppComponent } from './app.component';
 import {PostCreateComponent} from './posts/post-create/post-create.component';
 import { HeaderComponent } from './header/header.component';
@@ -28,6 +29,9 @@ import { MasterstudijeComponent } from './masterstudije/masterstudije.component'
 import { NaukaComponent } from './nauka/nauka.component';
 import { KontaktComponent } from './kontakt/kontakt.component';
 import { OpredmetuComponent } from './opredmetu/opredmetu.component';
+import { OmiljeniComponent } from './omiljeni/omiljeni.component';
+import { GostComponent } from './posts/gost/gost.component';
+import { NekretninaComponent } from './posts/nekretnina/nekretnina.component';
 
 
 
@@ -44,13 +48,17 @@ import { OpredmetuComponent } from './opredmetu/opredmetu.component';
     MasterstudijeComponent,
     NaukaComponent,
     KontaktComponent,
-    OpredmetuComponent
+    OpredmetuComponent,
+    OmiljeniComponent,
+    GostComponent,
+    NekretninaComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
     FormsModule,
+    NgxCaptchaModule,
     BrowserAnimationsModule,
     MatInputModule,
     MatCardModule,

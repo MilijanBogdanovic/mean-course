@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 
 const postsRoutes = require("./routes/posts");
 
-const userRoutes= require("./routes/users")
+const userRoutes= require("./routes/users");
 const app = express();
 //WEsvkucNb5n4AwL
 mongoose.connect("mongodb+srv://max:WEsvkucNb5n4AwL@cluster0.lemcw.mongodb.net/node-angular?retryWrites=true&w=majority",{useNewUrlParser: true})

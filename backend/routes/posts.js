@@ -34,6 +34,8 @@ const storage = multer.diskStorage( {
 });
 
 
+
+
 router.put("/:id",checkAuth,multer({storage: storage}).single("image"),(req,res,next) => {
   let imagePath = req.body.imagePath;
   if(req.file) {
@@ -84,6 +86,30 @@ router.post("",checkAuth, multer({storage: storage}).single("image"),(req,res,ne
 });
 
 
+
+router.post("/multiple",checkAuth, multer({storage: storage}).array("images",10),(req,res,next) => {
+  const url = req.protocol + "://" +req.get("host");
+  console.log(req.body);
+  const post = new Post( {
+    title: req.body.title,
+    content: req.body.content,
+    tip:req.body.tip,
+    oznaka:req.body.oznaka,
+    imagePath: url + "/images/" + req.file.filename,
+    creator: req.userData.userId
+  });
+  post.save().then(createdPost => {
+    res.status(201).json({
+      message: "Post added succesfully",
+      post: {
+        ...createdPost,
+        id:createdPost._id
+      }
+    });
+  });
+});
+
+
 router.get('',(req,res,next) => {
   const pageSize = +req.query.pagesize;
   const currentPage = +req.query.page;
@@ -97,6 +123,82 @@ router.get('',(req,res,next) => {
       fetchedPosts = documents;
       return Post.count();
   }).then( count => {
+    res.status(200).json({
+      message: 'Posts fetched succesfully!',
+      posts: fetchedPosts,
+      maxPosts: count
+  });
+  });
+});
+
+
+router.get('/returnLastFive',(req,res,next) => {
+  const postQuery = Post.find();
+  let fetchedPosts;
+  postQuery.find().sort({_id:-1}).limit(5)
+    .then(documents => {
+      fetchedPosts = documents;
+      return Post.count();
+  }).then( count => {
+    res.status(200).json({
+      message: 'Posts fetched succesfully!',
+      posts: fetchedPosts,
+      maxPosts: count
+  });
+  });
+});
+
+router.get('/Favorites',(req,res,next) => {
+  const pageSize = +req.query.pagesize;
+  const currentPage = +req.query.page;
+  const postQuery = Post.find();
+  let fetchedPosts;
+  if(pageSize && currentPage) {
+    postQuery.skip(pageSize *(currentPage - 1)).limit(pageSize);
+  }
+  postQuery.find()
+    .then(documents => {
+      fetchedPosts = documents;
+      return Post.count();
+  }).then( count => {
+    res.status(200).json({
+      message: 'Posts fetched succesfully!',
+      posts: fetchedPosts,
+      maxPosts: count
+  });
+  });
+});
+
+
+
+
+
+
+router.get('/filter',(req,res,next) => {
+  // const pageSize = +req.query.pagesize;
+  // const currentPage = +req.query.page;
+  let postQuery;
+  let postTitle = req.query.title;
+  let postContent = req.query.content;
+  console.log(req.query.title);
+  if(!(req.query.title === "")){
+    console.log(req.query.title.toString());
+
+  }
+  postQuery = Post.find( {$and:[{"title": {$regex:postTitle}},{"content":{$regex:postContent}}]});
+  // if(!(req.query.content === "")){
+  //   postQuery = Post.find({"content": req.query.content});
+  // }
+  let fetchedPosts;
+  // if(pageSize && currentPage) {
+  //   postQuery.skip(pageSize *(currentPage - 1)).limit(pageSize);
+  // }
+  postQuery.find().exec()
+    .then(documents => {
+      fetchedPosts = documents;
+      return Post.count();
+  }).then( count => {
+    console.log(fetchedPosts);
     res.status(200).json({
       message: 'Posts fetched succesfully!',
       posts: fetchedPosts,

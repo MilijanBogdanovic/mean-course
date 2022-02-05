@@ -7,14 +7,19 @@ import { KontaktComponent } from './kontakt/kontakt.component';
 import { MasterstudijeComponent } from './masterstudije/masterstudije.component';
 import { NastavniciComponent } from './nastavnici/nastavnici.component';
 import { NaukaComponent } from './nauka/nauka.component';
+import { OmiljeniComponent } from './omiljeni/omiljeni.component';
 import { OpredmetuComponent } from './opredmetu/opredmetu.component';
 import { OsnovnestudijeComponent } from './osnovnestudije/osnovnestudije.component';
+import { GostComponent } from './posts/gost/gost.component';
+import { NekretninaComponent } from './posts/nekretnina/nekretnina.component';
 import { PostCreateComponent } from './posts/post-create/post-create.component';
 import { PostListComponent } from './posts/post-list/post-list.component';
 const routes: Routes = [
   {path: '', component: PostListComponent},
+  {path:'list',component:PostListComponent},
   {path: 'create', component: PostCreateComponent, canActivate: [AuthGuard]},
   {path: 'edit/:postId',component: PostCreateComponent, canActivate: [AuthGuard]},
+  {path: 'nekretnina/:postId',component: NekretninaComponent, canActivate: [AuthGuard]},
   {path:'login', component: LoginComponent},
   {path:'signup', component: SignupComponent},
   {path:'nastavnici', component: NastavniciComponent},
@@ -23,9 +28,7 @@ const routes: Routes = [
   {path:'nauka', component: NaukaComponent},
   {path:'kontakt', component: KontaktComponent},
   {path:'opredmetu', component: OpredmetuComponent},
-
-
-
+  {path:'omiljeni', component: OmiljeniComponent}
 ];
 
 @NgModule({

@@ -13,6 +13,7 @@ export class HeaderComponent implements OnInit, OnDestroy{
   userIsAuthenticated:any= false;
   private authListenerSubs: Subscription;
   useremail:string;
+  favoritePosts:string;
   constructor(private authService: AuthService){}
 
   ngOnInit() {
@@ -23,6 +24,7 @@ export class HeaderComponent implements OnInit, OnDestroy{
       localStorage.setItem("useremail",this.useremail);
     });
     this.useremail = localStorage.getItem("useremail");
+    this.favoritePosts = localStorage.getItem("favoritePosts");
     console.log(localStorage);
   }
   onLogout() {
